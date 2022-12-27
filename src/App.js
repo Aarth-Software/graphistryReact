@@ -1,5 +1,5 @@
 import React from "react";
-import { Graphistry } from "@graphistry/client-api-react";
+import { Graphistry, Client } from "@graphistry/client-api-react";
 import "@graphistry/client-api-react/assets/index.css";
 import "./App.css";
 import NeoFun from "./NeoFun";
@@ -7,6 +7,7 @@ import neo4j from "neo4j-driver";
 function App() {
   const [data, setData] = React.useState([]);
   const [status, setStatus] = React.useState(false);
+  const [key, setKey] = React.useState([]);
   const getData = async () => {
     setStatus(false);
     const readQuery = `MATCH (n:Movie) RETURN n LIMIT 25`;
@@ -25,21 +26,25 @@ function App() {
     var result = null;
     try {
       result = await session.run(readQuery);
-      console.log(result);
       setStatus(true);
+      setData(result);
     } catch (error) {
       console.log(`unable to execute query. ${error}`);
       setStatus(false);
-    } finally {
-      console.log("connected");
-      await session.close();
     }
-    setData(result.records);
   };
+
+  const getValidClient = async () => {
+    const client = await new Client("srinivas", "jackrider@066");
+    setKey(client);
+    console.log(client);
+  };
+
   React.useEffect(() => {
     getData();
-    console.log(data);
+    getValidClient();
   }, []);
+
   return (
     <div className="container">
       <div className="InputContainer">
@@ -47,8 +52,19 @@ function App() {
       </div>
       <div className="graphistryContainer">
         <Graphistry
-          dataset="Miserables"
-          graphistryHost="https://hub.graphistry.com"
+          apiKey={key._token}
+          bindings={{ destinationField: "d", idField: "n", sourceField: "s" }}
+          edges={[
+            { d: "b", s: "a", v1: 2 },
+            { d: "c", s: "b", v1: 3 },
+          ]}
+          nodes={[
+            { n: "a", v2: 2 },
+            { n: "b", v2: 4 },
+          ]}
+          onClientAPIConnected={function noRefCheck() {}}
+          play={1}
+          showSplashScreen
         />
       </div>
     </div>
