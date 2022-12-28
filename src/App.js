@@ -1,74 +1,59 @@
+import axios from "axios";
 import React from "react";
-import { Graphistry, Client } from "@graphistry/client-api-react";
-import "@graphistry/client-api-react/assets/index.css";
 import "./App.css";
+import Graph from "./Graph";
 import NeoFun from "./NeoFun";
-import neo4j from "neo4j-driver";
+import { useGetToken } from "./Utils/useGetToken";
 function App() {
-  const [data, setData] = React.useState([]);
-  const [status, setStatus] = React.useState(false);
-  const [key, setKey] = React.useState([]);
-  const getData = async () => {
-    setStatus(false);
-    const readQuery = `MATCH (n:Movie) RETURN n LIMIT 25`;
-    const config = {
-      neo4j: {
-        url: "neo4j+s://7a396979.databases.neo4j.io",
-        authUser: "neo4j",
-        authKey: "MyHTf2fSrN-KgLEPwJmuCw6Z1dcqGOITyyd5wCHpGZ0",
-      },
-    };
-    const driver = neo4j.driver(
-      config.neo4j.url,
-      neo4j.auth.basic(config.neo4j.authUser, config.neo4j.authKey)
-    );
-    const session = driver.session({ database: "neo4j" });
-    var result = null;
+  const [status, setStatus] = React.useState("idle");
+  const [data, setData] = React.useState(null);
+  const textAreaRef = React.useRef(null);
+  // const [status, data] = useGetToken("srinivas", "jackrider@066");
+  // console.log(status, data);
+  const fun = async (query) => {
     try {
-      result = await session.run(readQuery);
-      setStatus(true);
-      setData(result);
-    } catch (error) {
-      console.log(`unable to execute query. ${error}`);
-      setStatus(false);
+      setStatus("loading");
+      let link = query;
+      const don = await axios.get(
+        `http://localhost:5000/getData/${link}`,
+        link
+      );
+      console.log(don.data.hello._datasetID);
+      setData(don.data.hello._datasetID);
+      setStatus("success");
+    } catch (err) {
+      console.log(err);
+      setStatus("error");
     }
   };
-
-  const getValidClient = async () => {
-    const client = await new Client("srinivas", "jackrider@066");
-    setKey(client);
-    console.log(client);
+  const getInitial = () => {
+    fun(textAreaRef.current.value);
   };
-
-  React.useEffect(() => {
-    getData();
-    getValidClient();
-  }, []);
-
   return (
     <div className="container">
       <div className="InputContainer">
-        <textarea />
+        <textarea ref={textAreaRef} />
+        <button onClick={getInitial}>RUN</button>
       </div>
-      <div className="graphistryContainer">
-        <Graphistry
-          apiKey={key._token}
-          bindings={{ destinationField: "d", idField: "n", sourceField: "s" }}
-          edges={[
-            { d: "b", s: "a", v1: 2 },
-            { d: "c", s: "b", v1: 3 },
-          ]}
-          nodes={[
-            { n: "a", v2: 2 },
-            { n: "b", v2: 4 },
-          ]}
-          onClientAPIConnected={function noRefCheck() {}}
-          play={1}
-          showSplashScreen
-        />
-      </div>
+      {status === "idle" && (
+        <div className="IdleContainer">
+          <div>Query has't been insearted</div>
+        </div>
+      )}
+      {status === "loading" && (
+        <div className="IdleContainer">
+          <div>Loading...</div>
+        </div>
+      )}
+      {status === "error" && (
+        <div className="IdleContainer">
+          <div>Connetion Error</div>
+        </div>
+      )}
+      {status === "success" && <Graph tok={data} />}
     </div>
   );
 }
 
 export default App;
+// MATCH (c1)<-[r]->(c2) RETURN c1,r,c2 LIMIT 170

@@ -27,6 +27,35 @@
   /* background-color: green; */
   width: 100%;
 }
+.IdleContainer{
+  /* background-color: red; */
+  height: 80%;
+  width: 100%;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+.IdleContainer div {
+  font-size: 5rem;
+  color: white;
+  font-weight: 500;
+}
+.InputContainer button {
+  background-color: rgb(141, 162, 219);
+  color: black;
+ height: 60%;
+ width: 7rem;
+  border: none;
+  outline: none;
+  border-radius: .3rem;
+  margin: 0 .3rem;
+  transition: .2s ease-in-out;
+}
+.InputContainer button:hover{
+  background-color: rgb(144, 243, 144);
+  color: white;
+  transition: .2s ease-in-out;
+}
 
 
 

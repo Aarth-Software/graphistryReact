@@ -30,18 +30,13 @@ const NeoFun = () => {
 
       try {
         const readQuery = `
-            MATCH (p:Person)-[:DIRECTED]->(:Movie {title: $ele})
-            RETURN p.name As Director
+        MATCH (n)-[r]-(n1) RETURN n,r,n1 LIMIT 5
           `;
 
         const readResult = await session.executeRead((tx) =>
           tx.run(readQuery, { ele })
         );
-        console.log(readResult.records);
 
-        readResult.records.forEach((record) => {
-          console.log(`${record.get("p")}`);
-        });
       } catch (error) {
         console.error(`Something went wrong: ${error}`);
       } finally {
