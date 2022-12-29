@@ -1,25 +1,65 @@
-import logo from './logo.svg';
-import './App.css';
+import axios from "axios";
+import React from "react";
+import "./App.css";
+import Graph from "./Graph";
+import { Client } from "@graphistry/client-api-react";
 
 function App() {
+  const textRef = React.useRef(null);
+  const [data, setData] = React.useState(null);
+  const [status, setStatus] = React.useState(null);
+  const [key, setKey] = React.useState(null);
+  const executeQuery = (query) => {
+    setStatus(false);
+    console.log(query);
+    fetch(`http://localhost:3000/runQuery?cypherQuery=${query}`, {
+      method: "GET",
+      mode: "cors",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((resp) => resp.json())
+      .then((result) => {
+        setData(result[0]);
+        setStatus(true);
+      })
+      .catch((err) => {
+        setStatus(false);
+      });
+  };
+
+  const getValidClient = async () => {
+    setKey(null);
+    const client = await new Client("username", "password");
+    const token = await client._getAuthTokenPromise;
+    setKey(token);
+    console.log(client);
+    console.log(token);
+  };
+  const run = () => {
+    executeQuery(textRef.current.value);
+    getValidClient();
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <div className="InputContainer">
+        <textarea ref={textRef} />
+        <button onClick={run}>Run</button>
+      </div>
+      {status && key && <Graph token={key} set={data} />}
     </div>
   );
 }
 
 export default App;
+// MATCH (c1)-[r]-(c2) RETURN c1,r,c2 LIMIT 10
+
+// var config = {
+//   method: 'POST',
+//   url: `${Query}`,
+//   headers: {
+//     'Content-Type': 'application/x-www-form-urlencoded',
+//     Authorization:
+//       token?.data?.token_type + ' ' + token?.data?.access_token,
+//   },
+//   data: data,
+// };

@@ -1,38 +1,64 @@
-.App {
+.container {
   text-align: center;
+  height: 100vh;
+  width: 100%;
+ background-color: #333339;
+ display: flex;
+ align-items: center;
+ justify-content: flex-start;
+ flex-direction: column;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.InputContainer{
+  height: 3.5rem;
+  width: 100%;
+  /* background-color: red; */
   display: flex;
-  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  background-color: white;
+}
+.InputContainer textarea{
+  width: 90%;
+  height: 89%;
+  outline: none;
+  resize: none;
+  border: none;
+}
+.graphistryContainer{
+  height: calc(100% - 4rem);
+  /* background-color: green; */
+  width: 100%;
+}
+.IdleContainer{
+  /* background-color: red; */
+  height: 80%;
+  width: 100%;
   align-items: center;
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+.IdleContainer div {
+  font-size: 5rem;
   color: white;
+  font-weight: 500;
+}
+.InputContainer button {
+  background-color: rgb(141, 162, 219);
+  color: black;
+ height: 70%;
+ width: 7rem;
+  border: none;
+  outline: none;
+  border-radius: .3rem;
+  margin: 0 .3rem;
+  transition: .2s ease-in-out;
+  margin: auto 0;
+}
+.InputContainer button:hover{
+  background-color: rgb(144, 243, 144);
+  color: white;
+  transition: .2s ease-in-out;
 }
 
-.App-link {
-  color: #61dafb;
-}
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+
