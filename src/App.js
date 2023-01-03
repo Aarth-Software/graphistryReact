@@ -32,6 +32,7 @@ function App() {
         <textarea ref={textRef} />
         <button onClick={run}>Run</button>
       </div>
+      {!status && <div className="lodingContainer">loading...</div>}
       {status && <Graph set={data} />}
     </div>
   );

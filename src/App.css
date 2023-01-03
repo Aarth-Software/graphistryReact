@@ -59,6 +59,13 @@
   color: white;
   transition: .2s ease-in-out;
 }
-
+.lodingContainer{
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  color: white;
+}
 
 
