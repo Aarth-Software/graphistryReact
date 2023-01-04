@@ -16,6 +16,7 @@ function App() {
     })
       .then((resp) => resp.json())
       .then((result) => {
+        console.log(result[0]);
         setData(result[0]);
         setStatus(true);
       })
@@ -32,7 +33,8 @@ function App() {
         <textarea ref={textRef} />
         <button onClick={run}>Run</button>
       </div>
-      {!status && <div className="lodingContainer">loading...</div>}
+      {status === false && <div className="lodingContainer">loading...</div>}
+      {status === null && <div className="lodingContainer">Insert query</div>}
       {status && <Graph set={data} />}
     </div>
   );

@@ -1,10 +1,13 @@
 import React from "react";
-import { Graphistry } from "@graphistry/client-api-react";
-import "@graphistry/client-api-react/assets/index.css";
+import "@graphistry/client-api-react/assets/index.less";
 const Graph = ({ set }) => {
   return (
     <div className="graphistryContainer">
-      <Graphistry dataset={set} graphistryHost="https://hub.graphistry.com" />
+      <iframe
+        className="iframe-container"
+        src={`https://hub.graphistry.com/graph/graph.html?dataset=${set}`}
+        title="GraphistryIframe"
+      />
     </div>
   );
 };
