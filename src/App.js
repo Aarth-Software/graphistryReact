@@ -1,14 +1,11 @@
-import axios from "axios";
 import React from "react";
 import "./App.css";
 import Graph from "./Graph";
-import { Client } from "@graphistry/client-api-react";
 
 function App() {
   const textRef = React.useRef(null);
   const [data, setData] = React.useState(null);
   const [status, setStatus] = React.useState(null);
-  const [key, setKey] = React.useState(null);
   const executeQuery = (query) => {
     setStatus(false);
     console.log(query);
@@ -37,7 +34,6 @@ function App() {
   };
   const run = () => {
     executeQuery(textRef.current.value);
-    getValidClient();
   };
   return (
     <div className="container">
@@ -52,14 +48,3 @@ function App() {
 
 export default App;
 // MATCH (c1)-[r]-(c2) RETURN c1,r,c2 LIMIT 10
-
-// var config = {
-//   method: 'POST',
-//   url: `${Query}`,
-//   headers: {
-//     'Content-Type': 'application/x-www-form-urlencoded',
-//     Authorization:
-//       token?.data?.token_type + ' ' + token?.data?.access_token,
-//   },
-//   data: data,
-// };
