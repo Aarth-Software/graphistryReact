@@ -5,9 +5,9 @@ const Graph = ({ token, set }) => {
   return (
     <div className="graphistryContainer">
       <Graphistry
-        apiKey={token}
+        // apiKey={token}
         dataset={set}
-        graphistryHost="hub.graphistry.com"
+        graphistryHost="https://hub.graphistry.com"
       />
     </div>
   );

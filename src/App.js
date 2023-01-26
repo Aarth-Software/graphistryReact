@@ -12,7 +12,7 @@ function App() {
   const executeQuery = (query) => {
     setStatus(false);
     console.log(query);
-    fetch(`http://localhost:3000/runQuery?cypherQuery=${query}`, {
+    fetch(`http://127.0.0.1/app2/runQuery?cypherQuery=${query}`, {
       method: "GET",
       mode: "cors",
       headers: { "Content-Type": "application/json" },
@@ -29,7 +29,7 @@ function App() {
 
   const getValidClient = async () => {
     setKey(null);
-    const client = await new Client("username", "password");
+    const client = await new Client("ahmeddoha", "Graph_CU_55");
     const token = await client._getAuthTokenPromise;
     setKey(token);
     console.log(client);
@@ -45,7 +45,7 @@ function App() {
         <textarea ref={textRef} />
         <button onClick={run}>Run</button>
       </div>
-      {status && key && <Graph token={key} set={data} />}
+      {status  && <Graph token={key} set={data} />}
     </div>
   );
 }
